@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dion.mapper.user.DemoUserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.dion.entity.user.DemoUser">
+		<id column="id" property="id" />
+		<result column="userid" property="userid" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="gender" property="gender" />
+	</resultMap>
+
+	<insert id="saveUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.dion.entity.user.DemoUser">
+		insert into demo_user(userid,`name`,age,gender)
+		values(#{userid},#{name},#{age},#{gender})
+	</insert>
+</mapper>
