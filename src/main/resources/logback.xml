@@ -12,9 +12,9 @@
 	</appender>
 
 	<appender name="serverAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${CATALINA_HOME}/logs-dt/dt.log</file>
+		<file>${CATALINA_HOME}/logs-sharding-jdbc-demo/sharding-jdbc-demo.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${CATALINA_HOME}/logs-dt/dt.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${CATALINA_HOME}/logs-sharding-jdbc-demo/sharding-jdbc-demo.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- 保留 30天数据，默认无限-->
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
@@ -36,7 +36,7 @@
 	<logger name="org.springframework.web" level="WARN"/>
 	<logger name="org.springframework.jdbc" level="WARN"/>
 	<logger name="org.apache.shiro" level="WARN"/>
-	<logger name="com.sz.youban" level="DEBUG"/> <!-- 级别为DEBUG mybatis-plus就有日志了 -->
+	<logger name="com.dion" level="DEBUG"/> <!-- 级别为DEBUG mybatis-plus就有日志了 -->
 
 	<!-- 日志输出控制台和文件 -->
 	<root level="info">

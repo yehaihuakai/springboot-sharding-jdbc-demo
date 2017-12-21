@@ -1,0 +1,23 @@
+17:10:38.756 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.dion.services.user.DemoUserServiceImplTest], using SpringBootContextLoader
+17:10:38.763 [main] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [com.dion.services.user.DemoUserServiceImplTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+17:10:38.857 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener]
+17:10:38.882 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@161b062a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@17c1bced, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d9d4f9d, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4034c28c, org.springframework.test.context.transaction.TransactionalTestExecutionListener@e50a6f6, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@14ec4505, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@53ca01a2, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@358c99f5]
+17:10:40.061 [main] INFO  c.d.s.user.DemoUserServiceImplTest - Starting DemoUserServiceImplTest on PC-20170526GRAK with PID 2964 (started by Administrator in G:\git_dev\sharding-jdbc\springboot-sharding-jdbc-mydemo)
+17:10:40.061 [main] DEBUG c.d.s.user.DemoUserServiceImplTest - Running with Spring Boot v1.5.4.RELEASE, Spring v4.3.9.RELEASE
+17:10:40.062 [main] INFO  c.d.s.user.DemoUserServiceImplTest - No active profile set, falling back to default profiles: default
+17:10:40.741 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.5.Final
+17:10:43.026 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+17:10:43.042 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} inited
+17:10:45.593 [main] INFO  c.d.s.user.DemoUserServiceImplTest - Started DemoUserServiceImplTest in 6.278 seconds (JVM running for 8.148)
+17:10:45.699 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==>  Preparing: INSERT INTO `demo_user` (`userid`, `name`, `age`, `gender`) VALUES (?, ?, ?, ?) 
+17:10:45.722 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==> Parameters: 100011(Long), 张三(String), 22(Integer), male(String)
+17:10:46.312 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - <==    Updates: 1
+17:10:46.314 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==>  Preparing: INSERT INTO `demo_user` (`userid`, `name`, `age`, `gender`) VALUES (?, ?, ?, ?) 
+17:10:46.314 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==> Parameters: 100012(Long), 李四(String), 24(Integer), male(String)
+17:10:46.478 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - <==    Updates: 1
+17:10:46.479 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==>  Preparing: INSERT INTO `demo_user` (`userid`, `name`, `age`, `gender`) VALUES (?, ?, ?, ?) 
+17:10:46.479 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==> Parameters: 100013(Long), 王五(String), 23(Integer), female(String)
+17:10:46.629 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - <==    Updates: 1
+17:10:46.629 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==>  Preparing: INSERT INTO `demo_user` (`userid`, `name`, `age`, `gender`) VALUES (?, ?, ?, ?) 
+17:10:46.630 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - ==> Parameters: 100014(Long), 赵六(String), 25(Integer), female(String)
+17:10:46.770 [main] DEBUG c.d.m.user.DemoUserMapper.saveUser - <==    Updates: 1

@@ -123,6 +123,8 @@
             <artifactId>velocity</artifactId>
             <version>1.7</version>
         </dependency>
+
+        <!--sharding-jdbc-->
         <dependency>
             <groupId>com.dangdang</groupId>
             <artifactId>sharding-jdbc-core</artifactId>

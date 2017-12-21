@@ -50,6 +50,7 @@ public class DataSourceConfig {
         dataSourceMap.put("sharding-jdbc_demo_0", mybatisDataSource("sharding-jdbc_demo_0"));
         dataSourceMap.put("sharding-jdbc_demo_1", mybatisDataSource("sharding-jdbc_demo_1"));
 
+        //1.5 版本的数据源获取
         //设置默认库，两个库以上时必须设置默认库。默认库的数据源名称必须是dataSourceMap的key之一
         DataSourceRule dataSourceRule = new DataSourceRule(dataSourceMap, "sharding-jdbc_demo_0");
 
@@ -71,6 +72,7 @@ public class DataSourceConfig {
 
         //return new ShardingDataSource(shardingRule);
         return dataSource;
+
     }
 
     private DataSource mybatisDataSource(final String dataSourceName) throws SQLException {
