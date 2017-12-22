@@ -23,20 +23,11 @@ public class DemoUserServiceImpl implements IDemoUserService {
 
     @Override
     public void saveUser(DemoUser user) {
-//        demoUserMapper.insert(user);
 
-//        Long userid = user.getUserid();
-//        String name = user.getName();
-//        Integer age = user.getAge();
-//        String gender = user.getGender();
-//        demoUserMapper.saveUser(userid, name, age, gender);
-
-        int result = demoUserMapper.saveUser(user);
+        int result = demoUserMapper.saveDemoUser(user);
         System.out.println();
         System.out.println("----------" + result + "----------");
         System.out.println();
-
-//        demoUserMapper.saveUser(user);
     }
 
     @Override

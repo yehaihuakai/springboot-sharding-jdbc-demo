@@ -1,31 +1,29 @@
 package com.dion.druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.dangdang.ddframe.rdb.sharding.api.ShardingDataSourceFactory;
-import com.dangdang.ddframe.rdb.sharding.api.rule.DataSourceRule;
-import com.dangdang.ddframe.rdb.sharding.api.rule.ShardingRule;
-import com.dangdang.ddframe.rdb.sharding.api.rule.TableRule;
-import com.dangdang.ddframe.rdb.sharding.api.strategy.database.DatabaseShardingStrategy;
-import com.dangdang.ddframe.rdb.sharding.api.strategy.table.TableShardingStrategy;
-import com.dion.algorithm.ModuloDatabaseShardingAlgorithm;
-import com.dion.algorithm.ModuloTableShardingAlgorithm;
+import io.shardingjdbc.core.api.ShardingDataSourceFactory;
+import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
+import io.shardingjdbc.core.api.config.TableRuleConfiguration;
+import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.util.ObjectUtils;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by liyang on 2017/12/18.
@@ -36,6 +34,9 @@ import java.util.Map;
 @MapperScan(basePackages = { DataSourceConstants.MAPPER_PACKAGE }, sqlSessionFactoryRef = "mybatisSqlSessionFactory")
 @EnableConfigurationProperties(MybatisProperties.class)
 public class DataSourceConfig {
+
+    @Autowired
+    private MybatisProperties properties;
 
     private String url;
 
@@ -50,29 +51,37 @@ public class DataSourceConfig {
         dataSourceMap.put("sharding-jdbc_demo_0", mybatisDataSource("sharding-jdbc_demo_0"));
         dataSourceMap.put("sharding-jdbc_demo_1", mybatisDataSource("sharding-jdbc_demo_1"));
 
-        //1.5 版本的数据源获取
-        //设置默认库，两个库以上时必须设置默认库。默认库的数据源名称必须是dataSourceMap的key之一
-        DataSourceRule dataSourceRule = new DataSourceRule(dataSourceMap, "sharding-jdbc_demo_0");
+        //---------- 2.0.1 版本 ----------
+        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
 
-        //设置分表映射
-        TableRule userTableRule = TableRule.builder("demo_user")
-                .generateKeyColumn("userid") //将user_id作为分布式主键
-                .actualTables(Arrays.asList("demo_user_0", "demo_user_1"))
-                .dataSourceRule(dataSourceRule)
-                .build();
+        //设置默认的 db (对于不进行分表策略的数据存储而言)
+        shardingRuleConfig.setDefaultDataSourceName("sharding-jdbc_demo_0");
 
-        //具体分库分表策略
-        ShardingRule shardingRule = ShardingRule.builder()
-                .dataSourceRule(dataSourceRule)
-                .tableRules(Collections.singletonList(userTableRule))
-                .databaseShardingStrategy(new DatabaseShardingStrategy("age", new ModuloDatabaseShardingAlgorithm()))
-                .tableShardingStrategy(new TableShardingStrategy("userid", new ModuloTableShardingAlgorithm())).build();
+        // 配置 demo_user 表规则
+        {
+            TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
+            orderTableRuleConfig.setLogicTable("demo_user");
+            orderTableRuleConfig.setActualDataNodes("sharding-jdbc_demo_${0..1}.demo_user_${[0, 1]}");
+            // 配置分库策略
+            orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("age", "sharding-jdbc_demo_${age % 2}"));
+            // 配置分表策略
+            orderTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("userid", "demo_user_${userid % 2}"));
+            // 配置分片规则
+            shardingRuleConfig.getTableRuleConfigs().add(orderTableRuleConfig);
+        }
 
-        DataSource dataSource = ShardingDataSourceFactory.createDataSource(shardingRule);
+        // 省略配置order_item表规则...
+        {
+            //......
+        }
 
-        //return new ShardingDataSource(shardingRule);
+        // 获取数据源对象
+//        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig);
+        Map<String, Object> configMap = new HashedMap();
+        Properties props = new Properties();
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, configMap, props);
+
         return dataSource;
-
     }
 
     private DataSource mybatisDataSource(final String dataSourceName) throws SQLException {
@@ -127,6 +136,10 @@ public class DataSourceConfig {
             throws Exception {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(mybatisDataSource);
+        //设置mapper.xml文件的指定
+        if (!ObjectUtils.isEmpty(this.properties.resolveMapperLocations())) {
+            sessionFactory.setMapperLocations(this.properties.resolveMapperLocations());
+        }
         return sessionFactory.getObject();
     }
 

@@ -60,7 +60,7 @@ public class BusinessMpGenerator {
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/sharding-jdbc_demo?characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/sharding-jdbc_demo_0?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 
         // 策略配置
@@ -68,7 +68,7 @@ public class BusinessMpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         //strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] { "demo_user"}); // 需要生成的表
+        strategy.setInclude(new String[] { "user_info"}); // 需要生成的表
         // strategy.setExclude(new String[]{"com.dion.test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -98,7 +98,7 @@ public class BusinessMpGenerator {
         pc.setService("com.dion.interfaces.user");
         pc.setServiceImpl("com.dion.services.user");
         pc.setMapper("com.dion.mapper.user");
-        pc.setXml("user");
+        pc.setXml("mapper.user");
         mpg.setPackageInfo(pc);
 
         // 注入自定义配置，可以在 VM 中使用 cfg.abc 【可无】

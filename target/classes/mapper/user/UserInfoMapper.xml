@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dion.mapper.user.UserInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.dion.entity.user.UserInfo">
+		<id column="userid" property="userid" />
+		<result column="phone" property="phone" />
+		<result column="idcard" property="idcard" />
+	</resultMap>
+
+	<insert id="saveUserInfoByXML" parameterType="com.dion.entity.user.UserInfo">
+		insert into user_info(userid,`phone`,idcard)
+		values(#{userid},#{phone},#{idcard})
+	</insert>
+</mapper>

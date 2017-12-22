@@ -14,11 +14,9 @@ import org.apache.ibatis.annotations.Select;
  */
 //public interface DemoUserMapper extends BaseMapper<DemoUser> {
 public interface DemoUserMapper{
-//    void saveUser(DemoUser user);
 
     @Insert("INSERT INTO `demo_user` (`userid`, `name`, `age`, `gender`) VALUES (#{userid}, #{name}, #{age}, #{gender})")
-    int saveUser(DemoUser user);
-//    void saveUser(@Param("userid")Long userid , @Param("name") String name, @Param("age")Integer age, @Param("gender")String gender);
+    int saveDemoUser(DemoUser user);
 
     @Select("select count(*) from `demo_user`")
     int getNumber();
