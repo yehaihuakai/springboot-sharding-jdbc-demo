@@ -11,6 +11,7 @@ dataSources:
     password:
 
 shardingRule:
+  defaultDataSourceName: sharding-jdbc_demo_0   #设置默认db
   tables:
     demo_user:
       actualDataNodes: sharding-jdbc_demo_${0..1}.demo_user_${0..1}
