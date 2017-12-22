@@ -34,7 +34,6 @@ public class DemoUserServiceImplTest {
         demoUserService.saveUser();
     }
 
-
     /**
      * 测试未设置分表策略的存储，默认数据库
      */

@@ -2,10 +2,6 @@ package com.dion.druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.shardingjdbc.core.api.ShardingDataSourceFactory;
-import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
-import io.shardingjdbc.core.api.config.TableRuleConfiguration;
-import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -20,10 +16,9 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.util.ObjectUtils;
 
 import javax.sql.DataSource;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Created by liyang on 2017/12/18.
@@ -45,41 +40,11 @@ public class DataSourceConfig {
     private String password;
 
     @Bean(name = "mybatisDataSource")
-    public DataSource getDataSource() throws SQLException {
-        //设置分库映射
-        Map<String, DataSource> dataSourceMap = new HashMap<>(2);
-        dataSourceMap.put("sharding-jdbc_demo_0", mybatisDataSource("sharding-jdbc_demo_0"));
-        dataSourceMap.put("sharding-jdbc_demo_1", mybatisDataSource("sharding-jdbc_demo_1"));
+    public DataSource getDataSource() throws SQLException, IOException {
 
-        //---------- 2.0.1 版本 ----------
-        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-
-        //设置默认的 db (对于不进行分表策略的数据存储而言)
-        shardingRuleConfig.setDefaultDataSourceName("sharding-jdbc_demo_0");
-
-        // 配置 demo_user 表规则
-        {
-            TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
-            orderTableRuleConfig.setLogicTable("demo_user");
-            orderTableRuleConfig.setActualDataNodes("sharding-jdbc_demo_${0..1}.demo_user_${[0, 1]}");
-            // 配置分库策略
-            orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("age", "sharding-jdbc_demo_${age % 2}"));
-            // 配置分表策略
-            orderTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("userid", "demo_user_${userid % 2}"));
-            // 配置分片规则
-            shardingRuleConfig.getTableRuleConfigs().add(orderTableRuleConfig);
-        }
-
-        // 省略配置order_item表规则...
-        {
-            //......
-        }
-
-        // 获取数据源对象
-//        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig);
-        Map<String, Object> configMap = new HashedMap();
-        Properties props = new Properties();
-        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, configMap, props);
+        File yamlFile = new File(this.getClass().getClassLoader().getResource("datasource.yaml").getFile());
+        
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(yamlFile);
 
         return dataSource;
     }
