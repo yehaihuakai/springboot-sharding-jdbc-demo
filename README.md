@@ -1,7 +1,7 @@
 # springboot-sharding-jdbc-demo
 
 * 框架springboot + mybatis
-* 分库分表存储，事务回滚已测试
+* 分库分表存储，事务回滚已进行测试
 * 使用的引用是1.5版本
 ```
 <dependency>
